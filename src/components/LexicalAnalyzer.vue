@@ -34,9 +34,9 @@ export default defineComponent({
 
 <template>
   <div id="whole">
-    <div id="parent-left" class="allCenter">
+    <div id="parent-left" class="allCenter shadow">
       <div class="title">输入</div>
-      <el-scrollbar class="scrollbar shadow">
+      <el-scrollbar class="scrollbar">
         <div id="left" class="allCenter">
           <el-input
               type="textarea"
@@ -56,12 +56,13 @@ export default defineComponent({
       <el-button size="large" type="primary" @click="request" round>分析</el-button>
     </div>
 
-    <div id="parent-right" class="allCenter">
+    <div id="parent-right" class="allCenter shadow">
       <div class="title">输出</div>
-      <el-scrollbar class="scrollbar shadow">
+      <el-scrollbar class="scrollbar">
         <div id="right" class="allCenter">
-          <span>key2Code</span>
+          <span class="arg">单词-种别码 映射表</span>
           <el-input
+              class="output"
               type="textarea"
               :autosize="{ minRows: 2 }"
               placeholder="请输入内容"
@@ -69,8 +70,9 @@ export default defineComponent({
               style="width: 500px"
           >
           </el-input>
-          <span>preProcessedString</span>
+          <span class="arg">预处理后的代码</span>
           <el-input
+              class="output"
               type="textarea"
               :autosize="{ minRows: 2 }"
               placeholder="请输入内容"
@@ -78,8 +80,9 @@ export default defineComponent({
               style="width: 500px"
           >
           </el-input>
-          <span>result</span>
+          <span class="arg">分析结果</span>
           <el-input
+              class="output"
               type="textarea"
               :autosize="{ minRows: 2 }"
               placeholder="请输入内容"
@@ -109,5 +112,12 @@ export default defineComponent({
   .scrollbar {
     height: 500px;
     padding: 20px;
+  }
+  .arg {
+    padding-bottom: 10px;
+    text-align: center;
+  }
+  .output {
+    padding-bottom: 20px;
   }
 </style>
