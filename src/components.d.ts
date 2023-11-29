@@ -26,8 +26,13 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     LexicalAnalyzer: typeof import('./components/LexicalAnalyzer.vue')['default']
+    LLAnalysis: typeof import('./components/LLAnalysis.vue')['default']
+    LLAnalyzer: typeof import('./components/LLAnalyzer.vue')['default']
     Logos: typeof import('./components/Logos.vue')['default']
+    LRAnalyzer: typeof import('./components/LRAnalyzer.vue')['default']
+    OperatorFirstAnalyzer: typeof import('./components/OperatorFirstAnalyzer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TopNav: typeof import('./components/TopNav.vue')['default']
   }
 }

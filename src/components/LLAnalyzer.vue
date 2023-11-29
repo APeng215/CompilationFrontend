@@ -2,18 +2,20 @@
 import {defineComponent} from 'vue'
 import Config from "~/config";
 export default defineComponent({
-  name: "LexicalAnalyzer",
+  name: "LLAnalyzer",
   data() {
     return {
       rowString: "",
-      key2Code: "",
-      preProcessedString: "",
-      result: ""
+
+      firstSets: "",
+      followSets: "",
+      analyzingTable: "",
+      analysisResult: ""
     }
   },
   methods: {
     request() {
-      fetch(Config.endPointIP + "/compilation/api/lexicalAnalysis", {
+      fetch(Config.endPointIP + "/compilation/api/llAnalysis", {
         method: "POST",
         body: this.rowString,
         headers: {
@@ -22,9 +24,10 @@ export default defineComponent({
       })
           .then((response) => response.json())
           .then((json) => {
-            this.key2Code = json.key2Code;
-            this.preProcessedString = json.preProcessedString;
-            this.result = json.result;
+            this.firstSets = json.firstSets;
+            this.followSets = json.followSets;
+            this.analyzingTable = json.analyzingTable;
+            this.analysisResult = json.analysisResult;
             console.log(json)
           })
     }
@@ -36,20 +39,28 @@ export default defineComponent({
   <div id="whole">
     <div id="parent-left" class="allCenter shadow">
       <div class="title">
-          <el-icon style="margin: auto"><Document /></el-icon>
+        <el-icon style="margin: auto"><Document /></el-icon>
         输入
       </div>
       <el-scrollbar class="scrollbar">
         <div id="left" class="allCenter">
           <el-input
+              class="input"
               type="textarea"
               :autosize="{ minRows: 2 }"
-              placeholder="请输入待分析串"
+              placeholder="请输入待分析文法"
               v-model="rowString"
-              class="input"
           >
           </el-input>
         </div>
+        <span>
+            输入 格式要求：<br>
+            第 1 行：开始符号<br>
+            第 2 行：非终结符（用空格隔开）<br>
+            第 3 行：终结符（用空格隔开）<br>
+            余下每行：产生式（形如 F->(E)|i ）<br>
+            最后一行：表达式（用 # 结尾，形如 (i+i)# ）
+        </span>
       </el-scrollbar>
     </div>
 
@@ -72,33 +83,47 @@ export default defineComponent({
       </div>
       <el-scrollbar class="scrollbar">
         <div id="right" class="allCenter">
-          <span class="arg">单词-种别码 映射表</span>
+
+          <span class="arg">FIRST集</span>
           <el-input
               class="output"
               type="textarea"
               :autosize="{ minRows: 2 }"
-              placeholder="请输入内容"
-              v-model="key2Code"
+              placeholder=""
+              v-model="firstSets"
           >
           </el-input>
-          <span class="arg">预处理后的代码</span>
+
+          <span class="arg">FOLLOW集</span>
           <el-input
               class="output"
               type="textarea"
               :autosize="{ minRows: 2 }"
-              placeholder="请输入内容"
-              v-model="preProcessedString"
+              placeholder=""
+              v-model="followSets"
           >
           </el-input>
-          <span class="arg">分析结果</span>
+
+          <span class="arg">预测分析表</span>
           <el-input
               class="output"
               type="textarea"
               :autosize="{ minRows: 2 }"
-              placeholder="请输入内容"
-              v-model="result"
+              placeholder=""
+              v-model="analyzingTable"
           >
           </el-input>
+
+          <span class="arg">分析过程及结果</span>
+          <el-input
+              class="output"
+              type="textarea"
+              :autosize="{ minRows: 2 }"
+              placeholder=""
+              v-model="analysisResult"
+          >
+          </el-input>
+
         </div>
       </el-scrollbar>
     </div>
@@ -108,34 +133,34 @@ export default defineComponent({
 </template>
 
 <style scoped>
-  #whole {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-content: center;
-  }
-  #right {
-    display: flex;
-    flex-direction: column;
-  }
-  .scrollbar {
-    height: 500px;
-    margin: 20px;
-    padding: 2px;
-    border: 2px solid grey;
-    border-radius: 8px;
-  }
-  .arg {
-    padding-bottom: 10px;
-    text-align: center;
-  }
-  .output {
-    padding-bottom: 20px;
-    width: 550px;
-    font: 14px "Consolas"
-  }
-  .input {
-    width: 550px;
-    font: 14px "Consolas"
-  }
+#whole {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: center;
+}
+#right {
+  display: flex;
+  flex-direction: column;
+}
+.scrollbar {
+  height: 500px;
+  margin: 20px;
+  padding: 2px;
+  border: 2px solid grey;
+  border-radius: 8px;
+}
+.arg {
+  padding-bottom: 10px;
+  text-align: center;
+}
+.output {
+  width: 550px;
+  padding-bottom: 20px;
+  font: 14px "Consolas"
+}
+.input {
+  width: 550px;
+  font: 14px "Consolas"
+}
 </style>
